@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+
+</style>
+<body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+<script>
+
+var width = 1240,
+    height = 750;
+
+var projection = d3.geo.albersUsa()
+    .scale(1000)
+    .translate([width / 2, height / 2]);
+
+var path = d3.geo.path()
+    .projection(projection);    
+
+var svg = d3.select("body").append("svg")
+      .attr("width", width)
+      .attr("height", height);
+
+// d3.json("cd.json", function(error, cd) {
+//   var  districts = topojson.feature(cd, cd.objects.districts);
+//   svg.append("path")
+//     .datum(districts)
+//     .attr("d", path);
+
+// });
+
+d3.json("cd.json", function(error, cd) {
+  var  districts = topojson.feature(cd, cd.objects.districts);
+  svg.selectAll(".districts")
+    .data(topojson.feature(cd, cd.objects.districts).features)
+  .enter().append("path")
+    .attr("class", function(d) { return d.id; })
+    .attr("d", path);
+
+});
+</script>
+</body>
+</html>
